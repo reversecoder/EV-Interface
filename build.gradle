@@ -16,4 +16,13 @@ allprojects {
     repositories {
         jcenter()
     }
+
+    ext.appVersionCode = 100
+    ext.appVersionName = "1.0.0"
+    ext.appMinSdkVersion = 15
+    ext.appTargetSdkVersion = 22
+    ext.appCompileSdkVersion = 22
+    ext.appBuildToolsVersion = '25.0.0'
+    ext.supportlibraryVersion = '22.2.1'
 }
+

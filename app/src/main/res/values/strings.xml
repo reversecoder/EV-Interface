@@ -586,6 +586,7 @@
     <!-- Main (fragment) -->
 
     <string name="menu_Main">Main</string>
+    <string name="menu_send_log">Send Log</string>
     <string name="help_Main">Use swipe gestures to switch between Main, Technical and Experimental screens.</string>
 
     <!-- Technical (fragment) -->
