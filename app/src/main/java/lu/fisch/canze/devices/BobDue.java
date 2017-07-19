@@ -21,6 +21,8 @@
 
 package lu.fisch.canze.devices;
 
+import com.reversecoder.logger.Logger;
+
 import java.io.IOException;
 import java.util.Calendar;
 
@@ -59,7 +61,7 @@ public class BobDue extends Device {
         if(BluetoothManager.getInstance().isConnected())
             BluetoothManager.getInstance().write("f" + filter + "\n");
         else
-            MainActivity.debug("BobDue.registerFilter " + filter + " failed because connectedBluetoothThread is NULL");
+            Logger.d("BobDue.registerFilter " + filter + " failed because connectedBluetoothThread is NULL");
     }
 
     @Override
@@ -68,7 +70,7 @@ public class BobDue extends Device {
         if(BluetoothManager.getInstance().isConnected())
             BluetoothManager.getInstance().write("r" + filter + "\n");
         else
-            MainActivity.debug("BobDue.unregisterFilter " + filter + " failed because connectedBluetoothThread is NULL");
+            Logger.d("BobDue.unregisterFilter " + filter + " failed because connectedBluetoothThread is NULL");
     }
 
     // send a command and wait for an answer
@@ -88,7 +90,7 @@ public class BobDue extends Device {
         if(command!=null)
             // prefix fir EOM to make sure the previous command is done!
             BluetoothManager.getInstance().write("\r\n"+command + "\r\n");
-        //MainActivity.debug("Send > "+command);
+        //Logger.d("Send > "+command);
         // wait if needed
         if(waitMillis>0)
             try {
@@ -103,13 +105,13 @@ public class BobDue extends Device {
         long start = Calendar.getInstance().getTimeInMillis();
         while(!stop && Calendar.getInstance().getTimeInMillis()-start<TIMEOUT)
         {
-            //MainActivity.debug("Delta = "+(Calendar.getInstance().getTimeInMillis()-start));
+            //Logger.d("Delta = "+(Calendar.getInstance().getTimeInMillis()-start));
             try {
                 // read a byte
                 if(BluetoothManager.getInstance().available()>0) {
-                    //MainActivity.debug("Reading ...");
+                    //Logger.d("Reading ...");
                     int data = BluetoothManager.getInstance().read();
-                    //MainActivity.debug("... done");
+                    //Logger.d("... done");
                     // if it is a real one
                     if (data != -1) {
                         // convert it to a character
@@ -127,7 +129,7 @@ public class BobDue extends Device {
                 e.printStackTrace();
             }
         }
-        //MainActivity.debug("Recv < "+readBuffer);
+        //Logger.d("Recv < "+readBuffer);
         return readBuffer;
     }
 
@@ -187,7 +189,7 @@ public class BobDue extends Device {
             return new Message(frame, pieces[1].trim(), false);
         else
         {
-            MainActivity.debug("BobDue: Got > "+text.trim());
+            Logger.d("BobDue: Got > "+text.trim());
             return new Message(frame, "-E-Unexpected result", true);
         }
     }

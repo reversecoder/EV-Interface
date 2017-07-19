@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 
+import com.reversecoder.logger.Logger;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,9 +21,6 @@ import lu.fisch.canze.R;
 import lu.fisch.canze.activities.MainActivity;
 import lu.fisch.canze.actors.Field;
 import lu.fisch.canze.interfaces.FieldListener;
-
-import static lu.fisch.canze.activities.MainActivity.debug;
-
 
 /**
  * Created by Chris Mattheis on 03/11/15.
@@ -95,7 +94,7 @@ public class DataLogger  implements FieldListener {
 
     public DataLogger() {
 
-        debug("DataLogger: constructor called");
+        Logger.d("DataLogger: constructor called");
 
     }
 
@@ -125,20 +124,20 @@ public class DataLogger  implements FieldListener {
 
     public boolean activate ( boolean state ) {
         boolean result = state;
-        debug ( "DataLogger: activate > request = " + state );
+        Logger.d ( "DataLogger: activate > request = " + state );
 
         if ( activated != state) {
             if (state) { // now need to activate, open file, start timer
                 result = start();
                 activated = result; // only true in case of no errors
-                // debug("DataLogger: start");
+                // Logger.d("DataLogger: start");
             } else { // now need to de-activate, close file, stop timer
                 result = stop();
                 activated = false; // always false
-                // debug("DataLogger: stop ");
+                // Logger.d("DataLogger: stop ");
             }
         }
-        debug ( "DataLogger: activate > return " + result );
+        Logger.d ( "DataLogger: activate > return " + result );
         return result;
     }
 
@@ -148,7 +147,7 @@ public class DataLogger  implements FieldListener {
 
         // ensure that there is a CanZE Folder in SDcard
         if ( ! isExternalStorageWritable()) {
-            debug ( "DataLogger: SDcard not writeable");
+            Logger.d ( "DataLogger: SDcard not writeable");
             return false;
         }
         else {
@@ -157,7 +156,7 @@ public class DataLogger  implements FieldListener {
             if (!dir.exists()) {
                 dir.mkdirs();
             }
-            debug("DataLogger: file_path:" + file_path);
+            Logger.d("DataLogger: file_path:" + file_path);
 
             // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
             String exportdataFileName = file_path + "data-" + sdf.format(Calendar.getInstance().getTime()) + ".log";
@@ -166,7 +165,7 @@ public class DataLogger  implements FieldListener {
             if (!logFile.exists()) {
                 try {
                     logFile.createNewFile();
-                    debug("DataLogger: NewFile:" +  exportdataFileName );
+                    Logger.d("DataLogger: NewFile:" +  exportdataFileName );
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -248,7 +247,7 @@ public class DataLogger  implements FieldListener {
     public void log(String text)
     {
         if(!isCreated()) createNewLog();
-        debug("DataLogger - log: " + text);
+        Logger.d("DataLogger - log: " + text);
 
         try {
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(logFile, true));
@@ -265,7 +264,7 @@ public class DataLogger  implements FieldListener {
 
         // open logfile
         // start timer
-        debug("DataLogger: start");
+        Logger.d("DataLogger: start");
         handler.postDelayed(runnable, 400);
         initListeners();
         return createNewLog();
@@ -276,7 +275,7 @@ public class DataLogger  implements FieldListener {
 
         // flush and close logfile
         // stop timer
-        debug("DataLogger: stop");
+        Logger.d("DataLogger: stop");
         logFile = null;
         handler.removeCallbacks(runnable);
 
@@ -287,7 +286,7 @@ public class DataLogger  implements FieldListener {
             }
             subscribedFields.clear();
         }
-        debug("DataLogger: stop - and logFile = null");
+        Logger.d("DataLogger: stop - and logFile = null");
         return result;
     }
 
@@ -315,7 +314,7 @@ public class DataLogger  implements FieldListener {
 
         subscribedFields = new ArrayList<>();
 
-        debug("DataLogger: initListeners");
+        Logger.d("DataLogger: initListeners");
 
         // Make sure to add ISO-TP listeners grouped by ID
 

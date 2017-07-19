@@ -31,6 +31,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.reversecoder.logger.Logger;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -50,9 +52,6 @@ import lu.fisch.canze.actors.Frames;
 import lu.fisch.canze.actors.Message;
 import lu.fisch.canze.actors.StoppableThread;
 import lu.fisch.canze.bluetooth.BluetoothManager;
-
-import static lu.fisch.canze.activities.MainActivity.debug;
-
 
 public class DtcActivity  extends CanzeActivity {
 
@@ -151,7 +150,7 @@ public class DtcActivity  extends CanzeActivity {
                 }
                 catch(Exception e)
                 {
-                    MainActivity.debug(e.getMessage());
+                    Logger.d(e.getMessage());
                 }
             }
 
@@ -310,7 +309,7 @@ public class DtcActivity  extends CanzeActivity {
                 }
                 catch(Exception e)
                 {
-                    MainActivity.debug(e.getMessage());
+                    Logger.d(e.getMessage());
                 }
             }
 
@@ -393,7 +392,7 @@ public class DtcActivity  extends CanzeActivity {
                 }
                 catch(Exception e)
                 {
-                    MainActivity.debug(e.getMessage());
+                    Logger.d(e.getMessage());
                 }
             }
 
@@ -502,7 +501,7 @@ public class DtcActivity  extends CanzeActivity {
 
         // ensure that there is a CanZE Folder in SDcard
         if ( ! isExternalStorageWritable()) {
-            debug ( "DiagDump: SDcard not writeable");
+            Logger.d ( "DiagDump: SDcard not writeable");
             return;
         }
 
@@ -510,11 +509,11 @@ public class DtcActivity  extends CanzeActivity {
         File dir = new File(file_path);
         if (!dir.exists()) {
             if (!dir.mkdirs()) {
-                debug("DiagDump: Can't create directory:" + file_path);
+                Logger.d("DiagDump: Can't create directory:" + file_path);
                 return;
             }
         }
-        debug("DiagDump: file_path:" + file_path);
+        Logger.d("DiagDump: file_path:" + file_path);
 
         // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String exportdataFileName = file_path + ecu.getMnemonic() + "-" + sdf.format(Calendar.getInstance().getTime()) + ".txt";
@@ -523,10 +522,10 @@ public class DtcActivity  extends CanzeActivity {
         if (!logFile.exists()) {
             try {
                 if (!logFile.createNewFile()) {
-                    debug("DiagDump: Can't create file:" + exportdataFileName);
+                    Logger.d("DiagDump: Can't create file:" + exportdataFileName);
                     return;
                 }
-                debug("DiagDump: NewFile:" +  exportdataFileName );
+                Logger.d("DiagDump: NewFile:" +  exportdataFileName );
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -564,7 +563,7 @@ public class DtcActivity  extends CanzeActivity {
                 }
                 catch(Exception e)
                 {
-                    MainActivity.debug(e.getMessage());
+                    Logger.d(e.getMessage());
                 }
             }
 

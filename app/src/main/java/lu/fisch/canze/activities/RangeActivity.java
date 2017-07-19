@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.reversecoder.logger.Logger;
+
 import java.util.Locale;
 
 import lu.fisch.canze.R;
@@ -36,7 +38,7 @@ public class RangeActivity extends CanzeActivity {
 
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFERENCES_FILE, 0);
         int lossSetting = settings.getInt("loss", 10);
-        MainActivity.debug("LOSS (load): "+loss);
+        Logger.d("LOSS (load): "+loss);
 
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setProgress(lossSetting);
@@ -57,7 +59,7 @@ public class RangeActivity extends CanzeActivity {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putInt("loss",(int) (loss*100));
                 editor.apply();
-                MainActivity.debug("LOSS (save): "+loss);
+                Logger.d("LOSS (save): "+loss);
             }
 
             @Override

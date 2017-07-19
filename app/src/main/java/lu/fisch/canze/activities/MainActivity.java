@@ -39,18 +39,16 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.reversecoder.logger.Logger;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Locale;
 
 import lu.fisch.canze.R;
@@ -59,7 +57,6 @@ import lu.fisch.canze.actors.Fields;
 import lu.fisch.canze.actors.Frames;
 import lu.fisch.canze.bluetooth.BluetoothManager;
 import lu.fisch.canze.classes.DataLogger;
-import lu.fisch.canze.classes.DebugLogger;
 import lu.fisch.canze.database.CanzeDataSource;
 import lu.fisch.canze.devices.BobDue;
 import lu.fisch.canze.devices.Device;
@@ -68,10 +65,15 @@ import lu.fisch.canze.devices.ELM327OverHttp;
 import lu.fisch.canze.interfaces.BluetoothEvent;
 import lu.fisch.canze.interfaces.DebugListener;
 import lu.fisch.canze.interfaces.FieldListener;
+import lu.fisch.canze.interfaces.ResponseListener;
 import lu.fisch.canze.ui.AppSectionsPagerAdapter;
+import lu.fisch.canze.util.AppUtil;
 
 public class MainActivity extends AppCompatActivity implements FieldListener /*, android.support.v7.app.ActionBar.TabListener */ {
     public static final String TAG = "  CanZE";
+
+    TextView tvResponse;
+    StringBuilder log = new StringBuilder();
 
     // SPP UUID service
     // private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -195,13 +197,13 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         return instance;
     }
 
-    public static void debug(String text) {
-        Log.d(TAG, text);
-        if (debugLogMode) {
-            SimpleDateFormat sdf = new SimpleDateFormat(getStringSingle(R.string.format_YMDHMSs), Locale.getDefault());
-            DebugLogger.getInstance().log(sdf.format(Calendar.getInstance().getTime()) + ": " + text);
-        }
-    }
+//    public static void debug(String text) {
+//        Logger.d(text);
+//        if (debugLogMode) {
+//            SimpleDateFormat sdf = new SimpleDateFormat(getStringSingle(R.string.format_YMDHMSs), Locale.getDefault());
+//            DebugLogger.getInstance().log(sdf.format(Calendar.getInstance().getTime()) + ": " + text);
+//        }
+//    }
 
     /* TODO we should move to simply always provide the level in the toast() call instead of all those if's in the code */
     public static void toast(int level, final String message) {
@@ -248,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
     }
 
     public void loadSettings() {
-        debug("MainActivity: loadSettings");
+        Logger.d("MainActivity: loadSettings");
         try {
             SharedPreferences settings = getSharedPreferences(PREFERENCES_FILE, 0);
             bluetoothDeviceName = settings.getString("deviceName", null);
@@ -309,6 +311,15 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
                     break;
                 case "ELM327":
                     device = new ELM327();
+                    device.setResponseListener(new ResponseListener() {
+                        @Override
+                        public void response(String msg) {
+                            if (!AppUtil.isNullOrEmpty(msg) && tvResponse != null) {
+                                log.append(msg + "\n\n");
+                                tvResponse.setText(log.toString());
+                            }
+                        }
+                    });
                     break;
                 case "ELM327Http":
                     device = new ELM327OverHttp();
@@ -333,10 +344,10 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
             // after loading PREFERENCES we may have new values for "dataExportMode"
             dataExportMode = dataLogger.activate(dataExportMode);
         } catch (Exception e) {
-            MainActivity.debug(e.getMessage());
+            Logger.d(e.getMessage());
             StackTraceElement[] st = e.getStackTrace();
             for (int i = 0; i < st.length; i++)
-                MainActivity.debug(st[i].toString());
+                Logger.d(st[i].toString());
         }
     }
 
@@ -388,14 +399,14 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         // dataLogger = DataLogger.getInstance();
         dataLogger = new DataLogger();
 
-        debug("MainActivity: onCreate");
+        Logger.d("MainActivity: onCreate");
 
         instance = this;
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        tvResponse = (TextView) findViewById(R.id.tv_response);
 
         // navigation bar
         AppSectionsPagerAdapter appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
@@ -466,7 +477,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
                 device.registerFilters();
 
                 // set title
-                debug("MainActivity: onAfterConnect > set title");
+                Logger.d("MainActivity: onAfterConnect > set title");
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -506,7 +517,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         //loadSettings(); --> done in onResume
 
         // load fields from static code
-        debug("Loaded fields: " + fields.size());
+        Logger.d("Loaded fields: " + fields.size());
 
 
         // load fields
@@ -514,14 +525,14 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         (new Thread(new Runnable() {
             @Override
             public void run() {
-                debug("Loading fields last field values from database");
+                Logger.d("Loading fields last field values from database");
                 for (int i = 0; i < fields.size(); i++) {
                     Field field = fields.get(i);
                     field.setCalculatedValue(CanzeDataSource.getInstance().getLast(field.getSID()));
-                    //debug("MainActivity: Setting "+field.getSID()+" = "+field.getValue());
+                    //Logger.d("MainActivity: Setting "+field.getSID()+" = "+field.getValue());
                     //f.setValue(settings.getFloat(f.getUniqueID(), 0));
                 }
-                debug("Loading fields last field values from database (done)");
+                Logger.d("Loading fields last field values from database (done)");
             }
         })).start();
     }
@@ -529,7 +540,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
 
     @Override
     public void onResume() {
-        debug("MainActivity: onResume");
+        Logger.d("MainActivity: onResume");
 
         instance = this;
 
@@ -631,8 +642,8 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
 
     @Override
     public void onPause() {
-        debug("MainActivity: onPause");
-        debug("MainActivity: onPause > leaveBluetoothOn = " + leaveBluetoothOn);
+        Logger.d("MainActivity: onPause");
+        Logger.d("MainActivity: onPause > leaveBluetoothOn = " + leaveBluetoothOn);
         visible = false;
 
         // stop here if BT should stay on!
@@ -644,7 +655,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         if (!leaveBluetoothOn) {
             if (device != null)
                 device.clearFields();
-            debug("MainActivity: stopping BT");
+            Logger.d("MainActivity: stopping BT");
             stopBluetooth();
         }
 
@@ -658,7 +669,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
     public void stopBluetooth(boolean reset) {
         if (device != null) {
             // stop the device
-            debug("MainActivity: stopBluetooth > stopAndJoin");
+            Logger.d("MainActivity: stopBluetooth > stopAndJoin");
             device.stopAndJoin();
             // remove reference
             if (reset) {
@@ -667,15 +678,15 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
             }
         }
         // disconnect BT
-        debug("MainActivity: stopBluetooth > BT disconnect");
+        Logger.d("MainActivity: stopBluetooth > BT disconnect");
         BluetoothManager.getInstance().disconnect();
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        MainActivity.debug("MainActivity: onActivityResult");
-        MainActivity.debug("MainActivity: onActivityResult > requestCode = " + requestCode);
-        MainActivity.debug("MainActivity: onActivityResult > resultCode = " + resultCode);
+        Logger.d("MainActivity: onActivityResult");
+        Logger.d("MainActivity: onActivityResult > requestCode = " + requestCode);
+        Logger.d("MainActivity: onActivityResult > resultCode = " + resultCode);
 
         // this must be set in any case
         leaveBluetoothOn = false;
@@ -684,7 +695,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
             // load settings
             loadSettings();
         } else if (requestCode == LEAVE_BLUETOOTH_ON) {
-            MainActivity.debug("MainActivity: onActivityResult > " + LEAVE_BLUETOOTH_ON);
+            Logger.d("MainActivity: onActivityResult > " + LEAVE_BLUETOOTH_ON);
             returnFromWidget = true;
             // register fields this activity needs
             /*
@@ -703,7 +714,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         {
             Field f = fields.get(i);
             editor.putFloat(f.getUniqueID(),(float) f.getRawValue());
-            //debug("Setting "+f.getUniqueID()+" = "+f.getRawValue());
+            //Logger.d("Setting "+f.getUniqueID()+" = "+f.getRawValue());
         }
         editor.commit();
     }
@@ -711,7 +722,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
 
     @Override
     protected void onDestroy() {
-        debug("MainActivity: onDestroy");
+        Logger.d("MainActivity: onDestroy");
 
         dataLogger.destroy(); // clean up
 
@@ -842,23 +853,26 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
                 return true;
             }
         }
-        // see AppSectionsPagerAdapter for the right sequence
-        else if (id == R.id.action_main) {
-            //loadFragement(new MainFragment());
-            viewPager.setCurrentItem(0, true);
-            updateActionBar();
 
-        } else if (id == R.id.action_technical) {
-            //loadFragement(new TechnicalFragment());
-            viewPager.setCurrentItem(1, true);
-            updateActionBar();
-
-        } else if (id == R.id.action_experimental) {
-            //loadFragement(new ExperimentalFragment());
-            viewPager.setCurrentItem(2, true);
-            updateActionBar();
-
-        } else if (id == R.id.action_send_log) {
+//        // see AppSectionsPagerAdapter for the right sequence
+//        else if (id == R.id.action_main) {
+//            //loadFragement(new MainFragment());
+//            viewPager.setCurrentItem(0, true);
+//            updateActionBar();
+//
+//        } else if (id == R.id.action_technical) {
+//            //loadFragement(new TechnicalFragment());
+//            viewPager.setCurrentItem(1, true);
+//            updateActionBar();
+//
+//        } else if (id == R.id.action_experimental) {
+//            //loadFragement(new ExperimentalFragment());
+//            viewPager.setCurrentItem(2, true);
+//            updateActionBar();
+//
+//        }
+//
+        else if (id == R.id.action_send_log) {
 //            mdhayatunnabi@yahoo.com
             Logger.saveLogAndEmailFile(MainActivity.this, "rashed.droid@gmail.com", new String[]{""});
         }
@@ -870,7 +884,7 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
     @Override
     public void onFieldUpdateEvent(Field field) {
         if (field.getSID().equals("5d7.0")) {
-            //debug("Speed "+field.getValue());
+            //Logger.d("Speed "+field.getValue());
             isDriving = (field.getValue() > 10);
         }
     }

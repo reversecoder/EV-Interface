@@ -31,6 +31,8 @@ import android.bluetooth.BluetoothSocket;
 import android.os.Build;
 import android.util.Log;
 
+import com.reversecoder.logger.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -95,7 +97,7 @@ public class BluetoothManager {
 
     private void debug(String text)
     {
-        MainActivity.debug(this.getClass().getSimpleName() + ": " + text);
+        Logger.d(this.getClass().getSimpleName() + ": " + text);
     }
 
     /**
@@ -358,7 +360,7 @@ public class BluetoothManager {
                 */
             }
         }
-        else MainActivity.debug("Write failed! Socket is closed ... M = "+message);
+        else Logger.d("Write failed! Socket is closed ... M = "+message);
     }
 
     public int read(byte[] buffer) throws IOException {

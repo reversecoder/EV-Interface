@@ -231,38 +231,50 @@ public class ELM327 extends Device {
             return deviceIsInitialized;
         }
 
-
         response = sendAndWaitForAnswer("03222002", 100); // // just one line
         Logger.d("Response<03222002>: " + response);
+        sendResponseToUi(response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         response = sendAndWaitForAnswer("03222006", 100); // // just one line
         Logger.d("Response<03222006>: " + response);
-
+        sendResponseToUi(response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         response = sendAndWaitForAnswer("03222005", 100); // // just one line
         Logger.d("Response<VO05>: " + response);
+        sendResponseToUi(response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         response = sendAndWaitForAnswer("03222004", 100); // // just one line
         Logger.d("Response<VOtageaftercontactor04>: " + response);
+        sendResponseToUi(response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         response = sendAndWaitForAnswer("03222003", 100); // // just one line
+        sendResponseToUi(response);
         Logger.d("Response<Speed03>" + response);
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         if (toughness == TOUGHNESS_HARD) {
             switch (elmVersion) {

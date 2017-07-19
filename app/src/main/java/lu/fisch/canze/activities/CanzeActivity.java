@@ -27,6 +27,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.reversecoder.logger.Logger;
+
 import java.util.ArrayList;
 
 import lu.fisch.canze.R;
@@ -59,10 +61,10 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
         if(MainActivity.device!=null)
             if(!BluetoothManager.getInstance().isConnected()) {
                 // restart Bluetooth
-                MainActivity.debug("CanzeActivity: restarting BT");
+                Logger.d("CanzeActivity: restarting BT");
                 BluetoothManager.getInstance().connect();
             }
-        MainActivity.debug("CanzeActivity: onCreate ("+this.getClass().getSimpleName()+")");
+        Logger.d("CanzeActivity: onCreate ("+this.getClass().getSimpleName()+")");
         //if(!widgetView) {
             // register all fields
             // --> not needed as these frames are now application bound and will not be cleared anyway
@@ -76,7 +78,7 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
     @Override
     protected void onPause() {
         super.onPause();
-        MainActivity.debug("CanzeActivity: onPause");
+        Logger.d("CanzeActivity: onPause");
 
         // stop here if BT should stay on!
         if(MainActivity.bluetoothBackgroundMode)
@@ -86,7 +88,7 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
 
         // if we are not coming back from somewhere, stop Bluetooth
         if(!back && !widgetClicked) {
-            MainActivity.debug("CanzeActivity: onPause > stopBluetooth");
+            Logger.d("CanzeActivity: onPause > stopBluetooth");
             MainActivity.getInstance().stopBluetooth(false);
         }
         if(!widgetClicked) {
@@ -100,10 +102,10 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
     @Override
     protected void onResume() {
         super.onResume();
-        MainActivity.debug("CanzeActivity: onResume");
+        Logger.d("CanzeActivity: onResume");
         // if we paused ourselvers
         if (iLeftMyOwn && !widgetClicked) {
-            MainActivity.debug("CanzeActivity: onResume > reloadBluetooth");
+            Logger.d("CanzeActivity: onResume > reloadBluetooth");
             // restart Bluetooth
             MainActivity.getInstance().reloadBluetooth(false);
             iLeftMyOwn = false;
@@ -113,7 +115,7 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
             MainActivity.device.initConnection();
 
         if(!widgetClicked) {
-            MainActivity.debug("CanzeActivity: onResume > initWidgets");
+            Logger.d("CanzeActivity: onResume > initWidgets");
             // initialise the widgets (if any present)
             initWidgets();
         }
@@ -123,14 +125,14 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
 
     @Override
     protected void onDestroy() {
-        MainActivity.debug("CanzeActivity: onDestroy");
+        Logger.d("CanzeActivity: onDestroy");
         if(!widgetView) {
             // free the widget listerners
             freeWidgetListeners();
             // free field listeners
             removeFieldListeners();
             if (isFinishing()) {
-                MainActivity.debug("CanzeActivity: onDestroy (finishing)");
+                Logger.d("CanzeActivity: onDestroy (finishing)");
                 // clear filters
                 MainActivity.device.clearFields();
                 //MainActivity.registerFields();
@@ -170,7 +172,7 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
 
                     wv.setCanzeActivity(CanzeActivity.this);
 
-                    MainActivity.debug("CanzeActivity: initWidgets: Widget: " + wv.getDrawable().getTitle() + " ("+wv.getFieldSID()+")");
+                    Logger.d("CanzeActivity: initWidgets: Widget: " + wv.getDrawable().getTitle() + " ("+wv.getFieldSID()+")");
                 }
             }
         }).start();
@@ -264,7 +266,7 @@ public abstract class CanzeActivity extends AppCompatActivity implements FieldLi
             if(!subscribedFields.contains(field))
                 subscribedFields.add(field);
         } else {
-            MainActivity.debug(this.getClass().getSimpleName()+" (CanzeActivity): SID " + sid + " does not exist in class Fields");
+            Logger.d(this.getClass().getSimpleName()+" (CanzeActivity): SID " + sid + " does not exist in class Fields");
         }
     }
 

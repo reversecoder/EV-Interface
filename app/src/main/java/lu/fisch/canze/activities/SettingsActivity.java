@@ -47,6 +47,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.reversecoder.logger.Logger;
+
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -123,7 +125,7 @@ public class SettingsActivity extends AppCompatActivity {
                 // if(device.substring(0,4).compareTo("HTTP") == 0){
                 if("HTTP Gateway".equals(pieces[0])) {
                     //deviceAddress.setText("");
-                    MainActivity.debug("Settings: gatewayUrl = "+gatewayUrl);
+                    Logger.d("Settings: gatewayUrl = "+gatewayUrl);
                     deviceAddress.setText(gatewayUrl);
                     deviceAddress.setEnabled(true);
                     deviceType.setEnabled(false);
@@ -507,8 +509,8 @@ public class SettingsActivity extends AppCompatActivity {
             Spinner toastLevel = (Spinner) findViewById(R.id.toastLevel);
             EditText deviceAddress = (EditText) findViewById(R.id.editTextDeviceAddress);
             if(remoteDevice.getSelectedItem()!=null) {
-                MainActivity.debug("Settings.deviceAddress = " + remoteDevice.getSelectedItem().toString().split("\n")[1].trim());
-                MainActivity.debug("Settings.deviceName = " + remoteDevice.getSelectedItem().toString().split("\n")[0].trim());
+                Logger.d("Settings.deviceAddress = " + remoteDevice.getSelectedItem().toString().split("\n")[1].trim());
+                Logger.d("Settings.deviceName = " + remoteDevice.getSelectedItem().toString().split("\n")[0].trim());
                 //editor.putString("deviceAddress", deviceList.getSelectedItem().toString().split("\n")[1].trim());
                 String deviceNameString = remoteDevice.getSelectedItem().toString().split("\n")[0].trim();
                 editor.putString("deviceName", deviceNameString);
@@ -552,7 +554,7 @@ public class SettingsActivity extends AppCompatActivity {
             fillDeviceList();
         }
 
-        MainActivity.debug("Code = "+requestCode);
+        Logger.d("Code = "+requestCode);
     }
 
     private void tryTofillDeviceList() {
@@ -575,8 +577,8 @@ public class SettingsActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences(MainActivity.PREFERENCES_FILE, 0);
         String deviceAddress=settings.getString("deviceAddress", null);
         String deviceName=settings.getString("deviceName", null);
-        MainActivity.debug("SELECT: deviceAddress = "+deviceAddress);
-        MainActivity.debug("SELECT: deviceName = "+deviceName);
+        Logger.d("SELECT: deviceAddress = "+deviceAddress);
+        Logger.d("SELECT: deviceName = "+deviceName);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         int index=-1;
         int i = 0;
@@ -613,7 +615,7 @@ public class SettingsActivity extends AppCompatActivity {
                     //if(device.getAddress().equals(deviceAddress))
                     if (deviceAlias.equals(deviceName)) {
                         index = i; // plus one as HTTP is always first in list
-                        //MainActivity.debug("SELECT: found = "+i+" ("+deviceAlias+")");
+                        //Logger.d("SELECT: found = "+i+" ("+deviceAlias+")");
                     }
                     i++;
                 }

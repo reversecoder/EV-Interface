@@ -2,6 +2,8 @@ package lu.fisch.canze.classes;
 
 import android.content.SharedPreferences;
 
+import com.reversecoder.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -113,7 +115,7 @@ public class LoggingLogger implements FieldListener {
         for(int i=0; i<size(); i++)
         {
             result.add(loggerFields.get(i).field.getSID());
-            MainActivity.debug("LoggerSize Save Field "+i+" = "+loggerFields.get(i).field.getSID());
+            Logger.d("LoggerSize Save Field "+i+" = "+loggerFields.get(i).field.getSID());
         }
             return result;
     }
@@ -124,7 +126,7 @@ public class LoggingLogger implements FieldListener {
         for(int i=0; i<size(); i++)
         {
             result.add(loggerFields.get(i).interval+"");
-            MainActivity.debug("LoggerSize Save Interval "+i+" = "+loggerFields.get(i).interval);
+            Logger.d("LoggerSize Save Interval "+i+" = "+loggerFields.get(i).interval);
         }
         return result;
     }
@@ -133,7 +135,7 @@ public class LoggingLogger implements FieldListener {
     {
         clear();
 
-        MainActivity.debug("LoggerSize Load = "+fields.size());
+        Logger.d("LoggerSize Load = "+fields.size());
 
         String[] fieldArray = fields.toArray(new String[fields.size()]);
         String[] intervalArray = intervalls.toArray(new String[intervalls.size()]);
@@ -143,7 +145,7 @@ public class LoggingLogger implements FieldListener {
                 add(Fields.getInstance().getBySID(fieldArray[i]), Integer.valueOf(intervalArray[i]));
             }
         }
-        else MainActivity.debug("LoggingLogger: list of SID's ("+fieldArray.length+") has different size than list of intervals ("+intervalArray.length+").");
+        else Logger.d("LoggingLogger: list of SID's ("+fieldArray.length+") has different size than list of intervals ("+intervalArray.length+").");
     }
 
     /* ****************************

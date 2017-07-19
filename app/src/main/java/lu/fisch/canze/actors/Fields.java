@@ -28,6 +28,8 @@ package lu.fisch.canze.actors;
 
 import android.os.Environment;
 
+import com.reversecoder.logger.Logger;
+
 import lu.fisch.canze.activities.MainActivity;
 import lu.fisch.canze.interfaces.VirtualFieldAction;
 
@@ -700,20 +702,20 @@ public class Fields {
 
         String[] lines = fieldDef.split("\n");
         for (String line : lines) {
-            //MainActivity.debug("Fields: Reading > "+line);
+            //Logger.d("Fields: Reading > "+line);
             //Get all tokens available in line
             String[] tokens = line.split(",");
             if (tokens.length >= 10) {
                 int frameId = Integer.parseInt(tokens[FIELD_ID].trim(), 16);
                 Frame frame = Frames.getInstance().getById(frameId);
                 if (frame == null) {
-                    MainActivity.debug("frame does not exist:" + tokens[FIELD_ID].trim());
+                    Logger.d("frame does not exist:" + tokens[FIELD_ID].trim());
                 } else {
                     short options = Short.parseShort(tokens[FIELD_OPTIONS].trim(), 16);
                     // ensure this field matches the selected car
                     if ((options & MainActivity.car) != 0) {
                         //Create a new field object and fill his  data
-                        MainActivity.debug(tokens[FIELD_ID] + "." + tokens[FIELD_RESPONSE_ID] + "." + tokens[FIELD_FROM]);
+                        Logger.d(tokens[FIELD_ID] + "." + tokens[FIELD_RESPONSE_ID] + "." + tokens[FIELD_FROM]);
                         Field field = new Field(
                                 frame,
                                 Short.parseShort(tokens[FIELD_FROM].trim()),
@@ -760,7 +762,7 @@ public class Fields {
     {
         //*Don't* hardcode "/sdcard"
         File sdcard = Environment.getExternalStorageDirectory();
-        MainActivity.debug("SD: "+sdcard.getAbsolutePath());
+        Logger.d("SD: "+sdcard.getAbsolutePath());
 
         //Get the text file
         File file = new File(sdcard,"fields.csv");

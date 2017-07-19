@@ -14,8 +14,6 @@ import android.content.Context;
 import lu.fisch.canze.R;
 import lu.fisch.canze.activities.MainActivity;
 
-import static lu.fisch.canze.activities.MainActivity.debug;
-
 /**
  * Created by Chris Mattheis on 03/11/15.
  * don't use yet - still work in progress

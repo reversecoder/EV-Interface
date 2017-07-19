@@ -38,6 +38,8 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.reversecoder.logger.Logger;
+
 import java.lang.reflect.Constructor;
 
 import lu.fisch.awt.Color;
@@ -221,7 +223,7 @@ public class WidgetView extends SurfaceView implements DrawSurfaceInterface, Sur
                         for (int s = 0; s < sids.length; s++) {
                             Field field = MainActivity.fields.getBySID(sids[s]);
                             if (field == null) {
-                                MainActivity.debug("WidgetView: init: Field with SID <" + sids[s] + "> (index <" + s + "> in <" + R.styleable.WidgetView_text + "> not found!");
+                                Logger.d("WidgetView: init: Field with SID <" + sids[s] + "> (index <" + s + "> in <" + R.styleable.WidgetView_text + "> not found!");
                             } else {
                                 // add field to list of registered sids for this widget
                                 drawable.addField(field.getSID());
@@ -242,7 +244,7 @@ public class WidgetView extends SurfaceView implements DrawSurfaceInterface, Sur
                 }
                 else
                 {
-                    MainActivity.debug("WidgetView: init: WidgetIndex " + widgetIndex + " is wrong!? Not registered in <WidgetView>?");
+                    Logger.d("WidgetView: init: WidgetIndex " + widgetIndex + " is wrong!? Not registered in <WidgetView>?");
                 }
             }
             catch(Exception e)
@@ -280,7 +282,7 @@ public class WidgetView extends SurfaceView implements DrawSurfaceInterface, Sur
 	    // get masked (not specific to a pointer) action
 	    int maskedAction = event.getActionMasked();
 
-        MainActivity.debug("WidgetView: maskedAction = " + maskedAction);
+        Logger.d("WidgetView: maskedAction = " + maskedAction);
 
 	    switch (maskedAction) {
 		    case MotionEvent.ACTION_DOWN:

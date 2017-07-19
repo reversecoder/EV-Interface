@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.reversecoder.logger.Logger;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +27,7 @@ public class LoggingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logging);
 
-        MainActivity.debug("LoggingActivity: onCreate");
+        Logger.d("LoggingActivity: onCreate");
 
         // load logging logger
         LoggingLogger.getInstance();

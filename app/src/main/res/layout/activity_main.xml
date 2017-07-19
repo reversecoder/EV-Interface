@@ -10,7 +10,7 @@
         android:layout_margin="10dp">
 
         <TextView
-            android:id="@+id/tv_log"
+            android:id="@+id/tv_response"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

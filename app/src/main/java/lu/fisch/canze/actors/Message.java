@@ -26,6 +26,8 @@
 package lu.fisch.canze.actors;
 
 
+import com.reversecoder.logger.Logger;
+
 import lu.fisch.canze.activities.MainActivity;
 import lu.fisch.canze.classes.FieldLogger;
 
@@ -152,7 +154,7 @@ public class Message {
 */
             } catch (Exception e)
             {
-                MainActivity.debug("Message.onMessageCompleteEventField: Exception!!");
+                Logger.d("Message.onMessageCompleteEventField: Exception!!");
                 // ignore
             }
         }

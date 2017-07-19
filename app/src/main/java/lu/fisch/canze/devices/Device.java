@@ -21,6 +21,8 @@
 
 package lu.fisch.canze.devices;
 
+import com.reversecoder.logger.Logger;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -33,6 +35,7 @@ import lu.fisch.canze.actors.Message;
 import lu.fisch.canze.actors.VirtualField;
 import lu.fisch.canze.bluetooth.BluetoothManager;
 import lu.fisch.canze.database.CanzeDataSource;
+import lu.fisch.canze.interfaces.ResponseListener;
 
 /**
  * This class defines an abstract device. It has to manage the device related
@@ -43,6 +46,18 @@ import lu.fisch.canze.database.CanzeDataSource;
  */
 
 public abstract class Device {
+
+    public ResponseListener mResponseListener=null;
+
+    public void setResponseListener(ResponseListener responseListener){
+        mResponseListener=responseListener;
+    }
+
+    public void sendResponseToUi(String response){
+        if(mResponseListener !=null){
+            mResponseListener.response(response);
+        }
+    }
 
     public static final int TOUGHNESS_HARD              = 0;    // hardest reset possible (ie atz)
     public static final int TOUGHNESS_MEDIUM            = 1;    // medium reset (i.e. atws)
@@ -100,13 +115,13 @@ public abstract class Device {
      */
     public void initConnection()
     {
-        MainActivity.debug("Device: initConnection");
+        Logger.d("Device: initConnection");
 
         if(BluetoothManager.getInstance().isConnected()) {
-            MainActivity.debug("Device: BT connected");
+            Logger.d("Device: BT connected");
             // make sure we only have one poller task
             if (pollerThread == null) {
-                MainActivity.debug("Device: pollerThread == null");
+                Logger.d("Device: pollerThread == null");
                 // post a task to the UI thread
                 setPollerActive(true);
 
@@ -116,10 +131,10 @@ public abstract class Device {
                         // if the device has been initialised and we got an answer
                         if(initDevice(TOUGHNESS_HARD)) {
                             while (isPollerActive()) {
-                                MainActivity.debug("Device: inside poller thread");
+                                Logger.d("Device: inside poller thread");
                                 if (applicationFields.size()+activityFieldsScheduled.size()+activityFieldsAsFastAsPossible.size() == 0
                                         || !BluetoothManager.getInstance().isConnected()) {
-                                    MainActivity.debug("Device: sleeping");
+                                    Logger.d("Device: sleeping");
                                     try {
                                         if(isPollerActive())
                                             Thread.sleep(5000);
@@ -132,23 +147,23 @@ public abstract class Device {
                                 else {
                                     if(isPollerActive())
                                     {
-                                        MainActivity.debug("Device: Doing next query ...");
+                                        Logger.d("Device: Doing next query ...");
                                         queryNextFilter();
                                     }
                                     else return;
                                 }
                             }
                             // dereference the poller thread (it i stopped now anyway!)
-                            MainActivity.debug("Device: Poller is done");
+                            Logger.d("Device: Poller is done");
                             pollerThread = null;
                         }
                         else
                         {
-                            MainActivity.debug("Device: no answer from device");
+                            Logger.d("Device: no answer from device");
 
                             // first check if we have not yet been killed!
                             if(isPollerActive()) {
-                                MainActivity.debug("Device: --- init failed ---");
+                                Logger.d("Device: --- init failed ---");
                                 // drop the BT connexion and try again
                                 (new Thread(new Runnable() {
                                     @Override
@@ -171,12 +186,12 @@ public abstract class Device {
         }
         else
         {
-            MainActivity.debug("Device: BT not connected");
+            Logger.d("Device: BT not connected");
             if(pollerThread!=null && pollerThread.isAlive())
             {
                 setPollerActive(false);
                 try {
-                    MainActivity.debug("Device: joining pollerThread");
+                    Logger.d("Device: joining pollerThread");
                     pollerThread.join();
                 }
                 catch (Exception e)
@@ -197,7 +212,7 @@ public abstract class Device {
                 Field field = getNextField();
 
                 if(field == null) {
-                    MainActivity.debug("Device: got no next field --> sleeping");
+                    Logger.d("Device: got no next field --> sleeping");
                     // no next field ---> sleep
                     try {
                         Thread.sleep(200);
@@ -209,7 +224,7 @@ public abstract class Device {
                 else
                 {
                     // long start = Calendar.getInstance().getTimeInMillis();
-                    MainActivity.debug("Device: queryNextFilter: " + field.getSID());
+                    Logger.d("Device: queryNextFilter: " + field.getSID());
                     MainActivity.getInstance().dropDebugMessage(field.getSID());
 
                     // get the data
@@ -232,7 +247,7 @@ public abstract class Device {
                             // reset if something went wrong ...
                             // ... but only if we are not asked to stop!
                             if (BluetoothManager.getInstance().isConnected()) {
-                                MainActivity.debug("Device: something went wrong!");
+                                Logger.d("Device: something went wrong!");
                                 // we don't want to continue, so we need to stop the poller right now!
                                 // TODO but are we? I don't believe this comment is correct is it?
                                 initDevice(TOUGHNESS_MEDIUM, 2); // toughness = 1, retries = 2
@@ -275,8 +290,8 @@ public abstract class Device {
 
                 // return it's index in the global registered field array
                 if(field.isDue(referenceTime)) {
-                    //MainActivity.debug(Calendar.getInstance().getTimeInMillis()/1000.+" > Chosing: "+field.getSID());
-                    MainActivity.debug("Device: getNextField > applicationFields");
+                    //Logger.d(Calendar.getInstance().getTimeInMillis()/1000.+" > Chosing: "+field.getSID());
+                    Logger.d("Device: getNextField > applicationFields");
                     return field;
                 }
             }
@@ -305,19 +320,19 @@ public abstract class Device {
 
                 // return it's index in the global registered field array
                 if(field.isDue(referenceTime)) {
-                    //MainActivity.debug(Calendar.getInstance().getTimeInMillis()/1000.+" > Chosing: "+field.getSID());
-                    MainActivity.debug("Device: getNextField > activityFieldsScheduled");
+                    //Logger.d(Calendar.getInstance().getTimeInMillis()/1000.+" > Chosing: "+field.getSID());
+                    Logger.d("Device: getNextField > activityFieldsScheduled");
                     return field;
                 }
             }
             if(activityFieldsAsFastAsPossible.size()>0)
             {
                 activityFieldIndex = (activityFieldIndex + 1) % activityFieldsAsFastAsPossible.size();
-                MainActivity.debug("Device: getNextField > activityFieldsAsFastAsPossible");
+                Logger.d("Device: getNextField > activityFieldsAsFastAsPossible");
                 return activityFieldsAsFastAsPossible.get(activityFieldIndex);
             }
 
-            MainActivity.debug("Device: applicationFields & customActivityFields empty? "
+            Logger.d("Device: applicationFields & customActivityFields empty? "
                     + applicationFields.size() + " / " + activityFieldsScheduled.size()+ " / " + activityFieldsAsFastAsPossible.size());
 
             return null;
@@ -381,13 +396,13 @@ public abstract class Device {
      */
     public void clearFields()
     {
-        MainActivity.debug("Device: clearFields");
+        Logger.d("Device: clearFields");
         synchronized (fields) {
             activityFieldsScheduled.clear();
             activityFieldsAsFastAsPossible.clear();
             fields.clear();
             fields.addAll(applicationFields);
-            //MainActivity.debug("cleared");
+            //Logger.d("cleared");
             // launch the filter clearing asynchronously
             (new Thread(new Runnable() {
                 @Override
@@ -636,14 +651,14 @@ public abstract class Device {
         initConnection();
 
         if(reset) {
-            MainActivity.debug("Device: init with reset");
+            Logger.d("Device: init with reset");
             // clean all filters (just to make sure)
             clearFields();
             // register all filters (if there are any)
             registerFilters();
         }
         else
-            MainActivity.debug("Device: init");
+            Logger.d("Device: init");
     }
 
     /**
@@ -651,24 +666,24 @@ public abstract class Device {
      */
     public void stopAndJoin()
     {
-        MainActivity.debug("Device: stopping poller");
+        Logger.d("Device: stopping poller");
         setPollerActive(false);
-        MainActivity.debug("Device: waiting for poller to be stopped");
+        Logger.d("Device: waiting for poller to be stopped");
         try {
             if(pollerThread!=null && pollerThread.isAlive()) {
-                MainActivity.debug("Device: joining thread");
+                Logger.d("Device: joining thread");
                 if(pollerThread!=null)
                     pollerThread.join();
                 pollerThread=null;
             }
-            else MainActivity.debug("Device: >>>>>>> pollerThread is NULL!!!");
-            MainActivity.debug("Device: pollerThread joined");
+            else Logger.d("Device: >>>>>>> pollerThread is NULL!!!");
+            Logger.d("Device: pollerThread joined");
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        MainActivity.debug("Device: poller stopped");
+        Logger.d("Device: poller stopped");
     }
 
     private boolean isPollerActive() {
@@ -695,16 +710,16 @@ public abstract class Device {
             msg = requestFreeFrame(frame);
 
         if (msg.isError()) {
-            MainActivity.debug("Device: request for " + frame.getRID() + " returned error " + msg.getError());
+            Logger.d("Device: request for " + frame.getRID() + " returned error " + msg.getError());
             // theory: when the answer is empty, the timeout is to low --> increase it!
             // jm: but never beyond 2
             if (intervalMultiplicator < maxIntervalMultiplicator) intervalMultiplicator += 0.1;
-            MainActivity.debug("Device: intervalMultiplicator = " + intervalMultiplicator);
+            Logger.d("Device: intervalMultiplicator = " + intervalMultiplicator);
         } else {
             // theory: when the answer is good, we might recover slowly --> decrease it!
             // jm: but never below 1 ----> 2015-12-14 changed 10 1.3
             if (intervalMultiplicator > minIntervalMultiplicator) intervalMultiplicator -= 0.01;
-            MainActivity.debug("Device: intervalMultiplicator = " + intervalMultiplicator);
+            Logger.d("Device: intervalMultiplicator = " + intervalMultiplicator);
         }
 
         return msg;

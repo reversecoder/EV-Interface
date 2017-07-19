@@ -29,6 +29,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
+import com.reversecoder.logger.Logger;
+
 import java.util.Locale;
 
 import lu.fisch.canze.R;
@@ -124,7 +126,7 @@ public class FirmwareActivity extends CanzeActivity implements FieldListener, De
                 try {
                     queryThread.join();
                 } catch (Exception e) {
-                    MainActivity.debug(e.getMessage());
+                    Logger.d(e.getMessage());
                 }
             }
         }
@@ -198,7 +200,7 @@ public class FirmwareActivity extends CanzeActivity implements FieldListener, De
                 }
                 catch(Exception e)
                 {
-                    MainActivity.debug(e.getMessage());
+                    Logger.d(e.getMessage());
                 }
             }
 
