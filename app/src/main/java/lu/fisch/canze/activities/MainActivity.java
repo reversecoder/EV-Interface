@@ -316,7 +316,11 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
                         public void response(String msg) {
                             if (!AppUtil.isNullOrEmpty(msg) && tvResponse != null) {
                                 log.append(msg + "\n\n");
-                                tvResponse.setText(log.toString());
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        tvResponse.setText(log.toString());
+                                    }
+                                });
                             }
                         }
                     });
