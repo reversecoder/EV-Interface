@@ -32,74 +32,7 @@
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity
-            android:name=".activities.WidgetActivity"
-            android:label="@string/title_activity_widget" />
-        <activity
-            android:name=".activities.ChargingTechActivity"
-            android:label="@string/title_activity_charging" />
-        <activity
-            android:name=".activities.ChargingActivity"
-            android:label="@string/title_activity_charging" />
-        <activity
-            android:name=".activities.DrivingActivity"
-            android:label="@string/title_activity_driving" />
-        <activity
-            android:name=".activities.BrakingActivity"
-            android:label="@string/title_activity_braking" />
-        <activity
-            android:name=".activities.LeafSpyActivity"
-            android:label="@string/title_activity_leaf_spy" />
-        <activity
-            android:name=".activities.ConsumptionActivity"
-            android:label="@string/title_activity_consumption" />
-        <activity
-            android:name=".activities.ElmTestActivity"
-            android:label="@string/title_activity_elm_test" />
-        <activity
-            android:name=".activities.FirmwareActivity"
-            android:label="@string/title_activity_firmware" />
-        <activity
-            android:name=".activities.BatteryActivity"
-            android:label="@string/title_activity_battery" />
-        <activity
-            android:name=".activities.DtcActivity"
-            android:label="@string/title_activity_dtc" />
-        <activity
-            android:name=".activities.HeatmapBatcompActivity"
-            android:label="@string/title_activity_heatmap_bat" />
-        <activity
-            android:name=".activities.HeatmapCellvoltageActivity"
-            android:label="@string/title_activity_heatmap_cellvoltage" />
-        <activity
-            android:name=".activities.FluenceKangooTempsActivity"
-            android:label="@string/title_activity_fluence_kangoo_temp" />
-        <activity
-            android:name=".activities.TyresActivity"
-            android:label="@string/title_activity_tyres" />
-        <activity
-            android:name=".activities.ChargingGraphActivity"
-            android:label="@string/title_activity_charging_graph" />
-        <activity
-            android:name=".activities.ClimaTechActivity"
-            android:label="@string/title_activity_clima_tech" />
-        <activity
-            android:name=".activities.PredictionActivity"
-            android:label="@string/title_activity_prediction" />
-        <activity
-            android:name=".activities.RangeActivity"
-            android:label="@string/title_activity_range" />
-        <activity
-            android:name=".activities.HarmonicsActivity"
-            android:label="@string/title_activity_harmonics" />
-        <activity
-            android:name=".activities.BcbActivity"
-            android:label="@string/title_activity_bcb" />
-        <activity
-            android:name=".activities.ChargingHistActivity"
-            android:label="@string/title_activity_charging_history" />
         <activity android:name=".activities.LoggingActivity" />
-        <activity android:name=".activities.Main2Activity"></activity>
     </application>
 
 </manifest>

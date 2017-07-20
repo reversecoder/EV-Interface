@@ -36,7 +36,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -58,15 +57,12 @@ import lu.fisch.canze.actors.Frames;
 import lu.fisch.canze.bluetooth.BluetoothManager;
 import lu.fisch.canze.classes.DataLogger;
 import lu.fisch.canze.database.CanzeDataSource;
-import lu.fisch.canze.devices.BobDue;
 import lu.fisch.canze.devices.Device;
 import lu.fisch.canze.devices.ELM327;
-import lu.fisch.canze.devices.ELM327OverHttp;
 import lu.fisch.canze.interfaces.BluetoothEvent;
 import lu.fisch.canze.interfaces.DebugListener;
 import lu.fisch.canze.interfaces.FieldListener;
 import lu.fisch.canze.interfaces.ResponseListener;
-import lu.fisch.canze.ui.AppSectionsPagerAdapter;
 import lu.fisch.canze.util.AppUtil;
 
 public class MainActivity extends AppCompatActivity implements FieldListener /*, android.support.v7.app.ActionBar.TabListener */ {
@@ -306,9 +302,6 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
 
             // create a new device
             switch (deviceType) {
-                case "Bob Due":
-                    device = new BobDue();
-                    break;
                 case "ELM327":
                     device = new ELM327();
                     device.setResponseListener(new ResponseListener() {
@@ -324,9 +317,6 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
                             }
                         }
                     });
-                    break;
-                case "ELM327Http":
-                    device = new ELM327OverHttp();
                     break;
                 default:
                     device = null;
@@ -374,23 +364,6 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         }
     }
 
-    protected void updateActionBar() {
-        switch (viewPager.getCurrentItem()) {
-            case 0:
-                actionBar.setIcon(R.mipmap.ic_launcher);
-                break;
-            case 1:
-                actionBar.setIcon(R.mipmap.fragement_technical);
-                break;
-            case 2:
-                actionBar.setIcon(R.mipmap.fragement_experimental);
-                break;
-            default:
-                break;
-        }
-    }
-
-    private ViewPager viewPager;
     private ActionBar actionBar;
 
     @Override
@@ -412,35 +385,9 @@ public class MainActivity extends AppCompatActivity implements FieldListener /*,
         setContentView(R.layout.activity_main);
         tvResponse = (TextView) findViewById(R.id.tv_response);
 
-        // navigation bar
-        AppSectionsPagerAdapter appSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
         actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
-        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-        viewPager = (ViewPager) findViewById(R.id.main);
-        viewPager.setAdapter(appSectionsPagerAdapter);
-        viewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                //actionBar.setSelectedNavigationItem(position);
-                updateActionBar();
-            }
-        });
-        updateActionBar();
-
-        /*
-        for (int i = 0; i < appSectionsPagerAdapter.getCount(); i++) {
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(appSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(MainActivity.this));
-        }
-        */
-
-
-        // load the initial "main" fragment
-        //loadFragement(new MainFragment());
-
+        actionBar.setIcon(R.mipmap.ic_launcher);
         setTitle(TAG + " - not connected");
         setBluetoothState(BLUETOOTH_DISCONNECTED);
 
