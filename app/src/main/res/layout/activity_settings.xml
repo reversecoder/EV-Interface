@@ -8,7 +8,7 @@
     android:paddingRight="8dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    tools:context="lu.fisch.canze.activities.SettingsActivity"
+    tools:context="com.reversecoder.canze.activity.SettingsActivity"
     android:id="@+id/activity_settings"
     android:windowSoftInputMode="stateHidden">
 

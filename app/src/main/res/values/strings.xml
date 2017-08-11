@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">CanZE</string>
+    <string name="app_version_name" translatable="false">1.0.0</string>
 
     <!-- <string name="title_activity_text">TextActivity</string> -->
     <!-- <string name="title_activity_temperatures">Temperatures</string> -->
@@ -604,5 +605,21 @@
     <string name="label_EndBatteryTemp">Temp</string>
     <string name="label_HistDuration">Dura</string>
     <string name="label_IH_ElectricalPowerDrived">Compressor power</string>
+
+    <!--Activity title-->
+    <string name="title_activity_login" translatable="false">Login</string>
+    <string name="title_activity_registration" translatable="false">Registration</string>
+    <string name="title_activity_dashboard" translatable="false">Dashboard</string>
+    <string name="title_activity_home" translatable="false">Home</string>
+    <string name="title_activity_map" translatable="false">Map</string>
+
+    <!--Toast message-->
+    <string name="toast_empty_name_field">Please fill name!</string>
+    <string name="toast_empty_email_field">Please fill email address!</string>
+    <string name="toast_empty_password_field">Please fill password!</string>
+    <string name="toast_already_have_an_account">Already have an account!</string>
+    <string name="toast_successfully_registered">Successfully registered!</string>
+    <string name="toast_user_not_found">User not found!</string>
+    <string name="toast_did_not_match_credential">Didn\'t match credential!</string>
 
 </resources>

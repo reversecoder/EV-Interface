@@ -9,7 +9,7 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:orientation="vertical"
-    tools:context="lu.fisch.canze.activities.LoggingActivity">
+    tools:context="com.reversecoder.canze.activity.LoggingActivity">
 
     <TextView
         android:id="@+id/textView2"
