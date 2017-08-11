@@ -37,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         relativeLayoutItemMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivity(new Intent(HomeActivity.this, MapActivity.class));
+                startActivity(new Intent(HomeActivity.this, MapActivity.class));
             }
         });
 

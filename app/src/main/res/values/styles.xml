@@ -9,12 +9,16 @@
         <item name="android:actionBarStyle">@style/ActionBarStyle</item>
     </style>
 
-    <style name="NoTitleBar" parent="Theme.AppCompat.NoActionBar">
-    </style>
+    <style name="NoTitleBar" parent="Theme.AppCompat.NoActionBar"></style>
 
     <style name="ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionButton">
         <item name="android:minWidth">0dip</item>
         <item name="android:paddingLeft">0dip</item>
         <item name="android:paddingRight">160dip</item>
+    </style>
+
+    <!-- My location fab -->
+    <style name="FloatingButton" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 </resources>

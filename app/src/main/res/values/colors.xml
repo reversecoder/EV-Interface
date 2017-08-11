@@ -5,4 +5,17 @@
     <color name="colorAccent">#3d82dc</color>
     <color name="textColorPrimary">#212121</color>
     <color name="textColorSecondary">#727272</color>
+
+    <!-- http://www.google.com/design/spec/style/color.html#color-color-palette -->
+    <color name="primary">#607d8b</color>
+    <!-- Blue Grey 500 -->
+    <color name="primary_dark">#455a64</color>
+    <!-- Blue Grey 700 -->
+    <color name="accent">#ff5252</color>
+    <!-- Red A200 -->
+    <!-- Marker colors -->
+    <color name="colorFastStationMark">#F0CE49</color>
+    <color name="colorCarFrontLight">#F0CE49</color>
+    <color name="colorCarRearLight">#FF5050</color>
+    <color name="colorCarWindow">#5B5D6E</color>
 </resources>

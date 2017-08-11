@@ -622,4 +622,54 @@
     <string name="toast_user_not_found">User not found!</string>
     <string name="toast_did_not_match_credential">Didn\'t match credential!</string>
 
+    <!--String for open charge google map-->
+    <!-- Map marker strings -->
+    <string name="marker_current">That\'s you!</string>
+
+    <!-- Content provider -->
+    <string name="content_authority" translatable="false">com.reversecoder.canze</string>
+
+    <!-- Error strings -->
+    <string name="error_OCM_sync_failure">Error in syncing data from openchargmap.org, please try again later. Error: </string>
+
+    <!-- Preferences/filters -->
+
+    <!-- Strings related to enable only fast chargers preference -->
+    <string name="pref_enable_only_fast_chargers_key" translatable="false">enable_only_fast</string>
+    <string name="pref_enable_only_fast_chargers_label">Only display fast chargers</string>
+    <string name="pref_enable_only_fast_chargers_true">Enabled</string>
+    <string name="pref_enable_only_fast_chargers_false">Not Enabled</string>
+    <!-- Strings related to charger types preferences -->
+    <string name="charger_types">Enable/disable connection types</string>
+    <!-- type2_mennekes -->
+    <string name="pref_enable_type2_mennekes_key" translatable="false">enable_type2_mennekes</string>
+    <string name="pref_enable_type2_mennekes_label">Type 2 Mennekes</string>
+    <string name="pref_enable_type2_mennekes_true">Enabled</string>
+    <string name="pref_enable_type2_mennekes_false">Not Enabled</string>
+    <!-- combo_css_eu -->
+    <string name="pref_enable_combo_ccs_eu_key" translatable="false">enable_combo_css_eu</string>
+    <string name="pref_enable_combo_ccs_eu_label">Combo CCS EU</string>
+    <string name="pref_enable_combo_ccs_eu_true">Enabled</string>
+    <string name="pref_enable_combo_ccs_eu_false">Not Enabled</string>
+    <!-- type1_j1772 -->
+    <string name="pref_enable_type1_j1772_key" translatable="false">enable_type1_j1772</string>
+    <string name="pref_enable_type1_j1772_label">Type 1 J1772</string>
+    <string name="pref_enable_type1_j1772_true">Enabled</string>
+    <string name="pref_enable_type1_j1772_false">Not Enabled</string>
+    <!-- type1_css -->
+    <string name="pref_enable_type1_ccs_key" translatable="false">enable_type1_css</string>
+    <string name="pref_enable_type1_ccs_label">Type 1 CCS</string>
+    <string name="pref_enable_type1_ccs_true">Enabled</string>
+    <string name="pref_enable_type1_ccs_false">Not Enabled</string>
+    <!-- chademo -->
+    <string name="pref_enable_chademo_key" translatable="false">enable_chademo</string>
+    <string name="pref_enable_chademo_label">Chademo</string>
+    <string name="pref_enable_chademo_true">Enabled</string>
+    <string name="pref_enable_chademo_false">Not Enabled</string>
+    <!-- tesla_hpwc -->
+    <string name="pref_enable_tesla_hpwc_key" translatable="false">enable_tesla_hpwc</string>
+    <string name="pref_enable_tesla_hpwc_label">Tesla HPWC</string>
+    <string name="pref_enable_tesla_hpwc_true">Enabled</string>
+    <string name="pref_enable_tesla_hpwc_false">Not Enabled</string>
+
 </resources>
