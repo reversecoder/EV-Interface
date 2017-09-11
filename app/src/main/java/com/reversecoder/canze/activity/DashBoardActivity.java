@@ -285,11 +285,17 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                     device = new ELM327();
                     device.setResponseListener(new ResponseListener() {
                         @Override
-                        public void response(String msg) {
+                        public void response(final String msg) {
                             if (!AppUtil.isNullOrEmpty(msg) && tvResponse != null) {
                                 log.append(msg + "\n\n");
                                 runOnUiThread(new Runnable() {
                                     public void run() {
+//                                        05-62-20-02-07-E8-AA-AA
+                                        String[] splittedBit= msg.split("-");
+                                        for(int i=0;i<splittedBit.length;i++){
+                                            Logger.d("Splitted bit, "+i+" = "+splittedBit[i]);
+                                        }
+
                                         tvResponse.setText(log.toString());
                                     }
                                 });
