@@ -233,7 +233,7 @@ public class ELM327 extends Device {
 
         response = sendAndWaitForAnswer("03222002", 100); // // just one line
         Logger.d("Response<03222002>: " + response);
-        sendResponseToUi(response);
+        sendResponseToUi("03222002", response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
@@ -242,7 +242,7 @@ public class ELM327 extends Device {
 
         response = sendAndWaitForAnswer("03222006", 100); // // just one line
         Logger.d("Response<03222006>: " + response);
-        sendResponseToUi(response);
+        sendResponseToUi("03222006", response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
@@ -251,7 +251,7 @@ public class ELM327 extends Device {
 
         response = sendAndWaitForAnswer("03222005", 100); // // just one line
         Logger.d("Response<VO05>: " + response);
-        sendResponseToUi(response);
+        sendResponseToUi("03222005", response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
@@ -260,7 +260,7 @@ public class ELM327 extends Device {
 
         response = sendAndWaitForAnswer("03222004", 100); // // just one line
         Logger.d("Response<VOtageaftercontactor04>: " + response);
-        sendResponseToUi(response);
+        sendResponseToUi("03222004", response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
@@ -268,7 +268,7 @@ public class ELM327 extends Device {
         }
 
         response = sendAndWaitForAnswer("03222003", 100); // // just one line
-        sendResponseToUi(response);
+        sendResponseToUi("03222003", response);
         Logger.d("Response<Speed03>" + response);
         try {
             Thread.sleep(300);

@@ -285,15 +285,32 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                     device = new ELM327();
                     device.setResponseListener(new ResponseListener() {
                         @Override
-                        public void response(final String msg) {
-                            if (!AppUtil.isNullOrEmpty(msg) && tvResponse != null) {
-                                log.append(msg + "\n\n");
+                        public void response(final String requestCode, final String response) {
+                            if (!AppUtil.isNullOrEmpty(response) && tvResponse != null) {
+                                log.append(response + "\n\n");
                                 runOnUiThread(new Runnable() {
                                     public void run() {
 //                                        05-62-20-02-07-E8-AA-AA
-                                        String[] splittedBit= msg.split("-");
-                                        for(int i=0;i<splittedBit.length;i++){
-                                            Logger.d("Splitted bit, "+i+" = "+splittedBit[i]);
+//                                        String[] splittedBit= response.split("-");
+//                                        for(int i=0;i<splittedBit.length;i++){
+//                                            Logger.d("Splitted bit, "+i+" = "+splittedBit[i]);
+//                                        }
+
+                                        if(requestCode.equalsIgnoreCase("03222002")){
+                                            //SoC x4750 => 2
+
+                                        }else if(requestCode.equalsIgnoreCase("03222003")){
+                                            //Speed km/h x100 => 2
+
+                                        }else if(requestCode.equalsIgnoreCase("03222004")){
+                                            //Voltage after contactor x2 => 2
+
+                                        }else if(requestCode.equalsIgnoreCase("03222005")){
+                                            //12V Voltage x100 => 2
+
+                                        }else if(requestCode.equalsIgnoreCase("03222006")){
+                                            //Odometer km => 3
+
                                         }
 
                                         tvResponse.setText(log.toString());

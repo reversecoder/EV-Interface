@@ -53,9 +53,9 @@ public abstract class Device {
         mResponseListener=responseListener;
     }
 
-    public void sendResponseToUi(String response){
+    public void sendResponseToUi(String requestCode, String response){
         if(mResponseListener !=null){
-            mResponseListener.response(response);
+            mResponseListener.response(requestCode, response);
         }
     }
 
