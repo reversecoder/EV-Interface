@@ -29,5 +29,19 @@ public class AppUtil {
         return false;
     }
 
+    public static int convertHexToDecimal(String str) {
+
+        int result = -1;
+        if (str != null || str.length() > 0) {
+            // length should be even number
+            // otherwise its not a valid hex
+            if (str.length() % 2 == 0) {
+                result = Integer.parseInt(str, 16);
+            }
+        }
+
+        return result;
+    }
+
 
 }

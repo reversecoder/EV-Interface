@@ -249,23 +249,23 @@ public class ELM327 extends Device {
             e.printStackTrace();
         }
 
-        response = sendAndWaitForAnswer("03222005", 100); // // just one line
-        Logger.d("Response<VO05>: " + response);
-        sendResponseToUi("03222005", response);
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        response = sendAndWaitForAnswer("03222004", 100); // // just one line
-        Logger.d("Response<VOtageaftercontactor04>: " + response);
-        sendResponseToUi("03222004", response);
-        try {
-            Thread.sleep(300);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        response = sendAndWaitForAnswer("03222005", 100); // // just one line
+//        Logger.d("Response<VO05>: " + response);
+//        sendResponseToUi("03222005", response);
+//        try {
+//            Thread.sleep(300);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        response = sendAndWaitForAnswer("03222004", 100); // // just one line
+//        Logger.d("Response<VOtageaftercontactor04>: " + response);
+//        sendResponseToUi("03222004", response);
+//        try {
+//            Thread.sleep(300);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 
         response = sendAndWaitForAnswer("03222003", 100); // // just one line
         sendResponseToUi("03222003", response);

@@ -46,7 +46,7 @@ import java.util.Locale;
 public class DashBoardActivity extends AppCompatActivity implements FieldListener /*, android.support.v7.app.ActionBar.TabListener */ {
     public static final String TAG = "  CanZE";
 
-    TextView tvResponse;
+    TextView tvStateOfCharge, tvSpeed, tvOdometer;
     StringBuilder log = new StringBuilder();
 
     // SPP UUID service
@@ -286,34 +286,37 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                     device.setResponseListener(new ResponseListener() {
                         @Override
                         public void response(final String requestCode, final String response) {
-                            if (!AppUtil.isNullOrEmpty(response) && tvResponse != null) {
+                            if (!AppUtil.isNullOrEmpty(response)) {
                                 log.append(response + "\n\n");
                                 runOnUiThread(new Runnable() {
                                     public void run() {
 //                                        05-62-20-02-07-E8-AA-AA
-//                                        String[] splittedBit= response.split("-");
-//                                        for(int i=0;i<splittedBit.length;i++){
-//                                            Logger.d("Splitted bit, "+i+" = "+splittedBit[i]);
-//                                        }
+                                        String[] splittedBit= response.split("-");
+                                        for(int i=0;i<splittedBit.length;i++){
+                                            Logger.d("Splitted bit, "+i+" = "+splittedBit[i]);
+                                        }
 
-                                        if(requestCode.equalsIgnoreCase("03222002")){
+                                        if (requestCode.equalsIgnoreCase("03222002")) {
                                             //SoC x4750 => 2
+//                                            int response = (AppUtil.convertHexToDecimal(splittedBit[3])*(16*16)) ;
+//                                            String soc=
+//                                            tvStateOfCharge.setText();
 
-                                        }else if(requestCode.equalsIgnoreCase("03222003")){
+                                        } else if (requestCode.equalsIgnoreCase("03222003")) {
                                             //Speed km/h x100 => 2
 
-                                        }else if(requestCode.equalsIgnoreCase("03222004")){
-                                            //Voltage after contactor x2 => 2
-
-                                        }else if(requestCode.equalsIgnoreCase("03222005")){
-                                            //12V Voltage x100 => 2
-
-                                        }else if(requestCode.equalsIgnoreCase("03222006")){
+                                        }
+//                                        else if(requestCode.equalsIgnoreCase("03222004")){
+//                                            //Voltage after contactor x2 => 2
+//
+//                                        }else if(requestCode.equalsIgnoreCase("03222005")){
+//                                            //12V Voltage x100 => 2
+//
+//                                        }
+                                        else if (requestCode.equalsIgnoreCase("03222006")) {
                                             //Odometer km => 3
 
                                         }
-
-                                        tvResponse.setText(log.toString());
                                     }
                                 });
                             }
@@ -384,8 +387,10 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        tvResponse = (TextView) findViewById(R.id.tv_response);
+        setContentView(R.layout.activity_dashboard);
+        tvStateOfCharge = (TextView) findViewById(R.id.tv_state_of_charge);
+        tvSpeed = (TextView) findViewById(R.id.tv_speed);
+        tvOdometer = (TextView) findViewById(R.id.tv_odometer);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
