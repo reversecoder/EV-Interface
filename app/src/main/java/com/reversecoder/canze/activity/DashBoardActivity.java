@@ -291,19 +291,32 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                                 runOnUiThread(new Runnable() {
                                     public void run() {
 //                                        05-62-20-02-07-E8-AA-AA
-                                        String[] splittedBit= response.split("-");
-                                        for(int i=0;i<splittedBit.length;i++){
-                                            Logger.d("Splitted bit, "+i+" = "+splittedBit[i]);
+                                        String[] splittedBit = response.split("-");
+                                        for (int i = 0; i < splittedBit.length; i++) {
+                                            Logger.d("Splitted bit, " + i + " = " + splittedBit[i]);
                                         }
 
                                         if (requestCode.equalsIgnoreCase("03222002")) {
                                             //SoC x4750 => 2
-//                                            int response = (AppUtil.convertHexToDecimal(splittedBit[3])*(16*16)) ;
-//                                            String soc=
-//                                            tvStateOfCharge.setText();
+
+                                            if (splittedBit.length >= 5) {
+                                                int firstPair = AppUtil.isAlphaNumericNumber(splittedBit[3]) ? AppUtil.convertHexToDecimal(splittedBit[3]) : Integer.parseInt(splittedBit[3]);
+                                                int secondPair = AppUtil.isAlphaNumericNumber(splittedBit[4]) ? AppUtil.convertHexToDecimal(splittedBit[4]) : Integer.parseInt(splittedBit[4]);
+                                                int result = ((firstPair * 256) + secondPair) / 4750;
+
+                                                tvStateOfCharge.setText(result + "");
+                                            }
 
                                         } else if (requestCode.equalsIgnoreCase("03222003")) {
                                             //Speed km/h x100 => 2
+
+                                            if (splittedBit.length >= 5) {
+                                                int firstPair = AppUtil.isAlphaNumericNumber(splittedBit[3]) ? AppUtil.convertHexToDecimal(splittedBit[3]) : Integer.parseInt(splittedBit[3]);
+                                                int secondPair = AppUtil.isAlphaNumericNumber(splittedBit[4]) ? AppUtil.convertHexToDecimal(splittedBit[4]) : Integer.parseInt(splittedBit[4]);
+                                                int result = ((firstPair * 256) + secondPair) / 100;
+
+                                                tvSpeed.setText(result + "");
+                                            }
 
                                         }
 //                                        else if(requestCode.equalsIgnoreCase("03222004")){
@@ -315,6 +328,15 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
 //                                        }
                                         else if (requestCode.equalsIgnoreCase("03222006")) {
                                             //Odometer km => 3
+
+                                            if (splittedBit.length >= 6) {
+                                                int firstPair = AppUtil.isAlphaNumericNumber(splittedBit[3]) ? AppUtil.convertHexToDecimal(splittedBit[3]) : Integer.parseInt(splittedBit[3]);
+                                                int secondPair = AppUtil.isAlphaNumericNumber(splittedBit[4]) ? AppUtil.convertHexToDecimal(splittedBit[4]) : Integer.parseInt(splittedBit[4]);
+                                                int thirdPair = AppUtil.isAlphaNumericNumber(splittedBit[5]) ? AppUtil.convertHexToDecimal(splittedBit[5]) : Integer.parseInt(splittedBit[5]);
+                                                int result = ((firstPair * 65536) + (secondPair * 256) + thirdPair);
+
+                                                tvOdometer.setText(result + "");
+                                            }
 
                                         }
                                     }

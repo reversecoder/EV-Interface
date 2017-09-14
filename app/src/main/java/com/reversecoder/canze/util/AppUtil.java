@@ -29,6 +29,23 @@ public class AppUtil {
         return false;
     }
 
+    public static boolean isAlphaNumericNumber(String str) {
+
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+
+        String regexAtLeastOneLetter = ".*[A-Za-z].*";
+        String regexAtLeastOneNumber = ".*[0-9].*";
+        String regexOnlyNumberAndLetter = "[A-Za-z0-9]*";
+
+        if (str.matches(regexAtLeastOneLetter) && str.matches(regexAtLeastOneNumber) && str.matches(regexOnlyNumberAndLetter)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public static int convertHexToDecimal(String str) {
 
         int result = -1;
