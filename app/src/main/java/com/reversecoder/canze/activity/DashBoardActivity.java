@@ -46,7 +46,7 @@ import java.util.Locale;
 public class DashBoardActivity extends AppCompatActivity implements FieldListener /*, android.support.v7.app.ActionBar.TabListener */ {
     public static final String TAG = "  CanZE";
 
-    TextView tvStateOfCharge, tvSpeed, tvOdometer;
+    TextView tvStateOfCharge, tvSpeed, tvOdometer, tvVoltageAfterContactor, tv12VVoltage, tvSensorSupplyVoltage1, tvSensorSupplyVoltage2;
     StringBuilder log = new StringBuilder();
 
     // SPP UUID service
@@ -156,7 +156,7 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                     }
 
                     // inform user
-                    setTitle(TAG + " - disconnected");
+                    setTitle(getString(R.string.app_name) + " - disconnected");
                     setBluetoothState(BLUETOOTH_DISCONNECTED);
                     toast(R.string.toast_BluetoothLost);
 
@@ -292,9 +292,9 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                                     public void run() {
                                         try {
 //                                        05-62-20-02-07-E8-AA-AA
-                                            Logger.d("requestCode: "+requestCode+" response: "+response);
+                                            Logger.d("requestCode: " + requestCode + " response: " + response);
                                             String[] splittedBit = response.split("-");
-                                            Logger.d("splittedBit: "+splittedBit.length);
+                                            Logger.d("splittedBit: " + splittedBit.length);
                                             for (int i = 0; i < splittedBit.length; i++) {
                                                 Logger.d("Splitted bit, " + i + " = " + splittedBit[i]);
                                             }
@@ -333,15 +333,17 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
 //                                                }
                                                 tvSpeed.setText(response + "");
 
-                                            }
-//                                        else if(requestCode.equalsIgnoreCase("03222004")){
-//                                            //Voltage after contactor x2 => 2
-//
-//                                        }else if(requestCode.equalsIgnoreCase("03222005")){
-//                                            //12V Voltage x100 => 2
-//
-//                                        }
-                                            else if (requestCode.equalsIgnoreCase("03222006")) {
+                                            } else if (requestCode.equalsIgnoreCase("03222004")) {
+                                                //Voltage after contactor x2 => 2
+                                                Logger.d("Voltage after contactor");
+                                                tvVoltageAfterContactor.setText(response + "");
+
+                                            } else if (requestCode.equalsIgnoreCase("03222005")) {
+                                                //12V Voltage x100 => 2
+                                                Logger.d("12V Voltage");
+                                                tv12VVoltage.setText(response + "");
+
+                                            } else if (requestCode.equalsIgnoreCase("03222006")) {
                                                 //Odometer km => 3
                                                 Logger.d("Inside odometer");
 
@@ -360,8 +362,18 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
 //                                                }
                                                 tvOdometer.setText(response + "");
 
+                                            } else if (requestCode.equalsIgnoreCase("03222021")) {
+                                                //Sensors supply voltage 1 in mV
+                                                Logger.d("Sensors supply voltage 1 in mV");
+                                                tvSensorSupplyVoltage1.setText(response + "");
+
+                                            } else if (requestCode.equalsIgnoreCase("03222022")) {
+                                                //Sensors supply voltage 1 in mV
+                                                Logger.d("Sensors supply voltage 1 in mV");
+                                                tvSensorSupplyVoltage2.setText(response + "");
+
                                             }
-                                        }catch (Exception ex){
+                                        } catch (Exception ex) {
                                             Logger.d(ex.getMessage());
                                         }
                                     }
@@ -438,11 +450,15 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
         tvStateOfCharge = (TextView) findViewById(R.id.tv_state_of_charge);
         tvSpeed = (TextView) findViewById(R.id.tv_speed);
         tvOdometer = (TextView) findViewById(R.id.tv_odometer);
+        tvVoltageAfterContactor = (TextView) findViewById(R.id.tv_voltage_after_contactor);
+        tv12VVoltage = (TextView) findViewById(R.id.tv_12V_voltage);
+        tvSensorSupplyVoltage1 = (TextView) findViewById(R.id.tv_sensor_supply_voltage_1);
+        tvSensorSupplyVoltage2 = (TextView) findViewById(R.id.tv_sensor_supply_voltage_2);
 
         actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE);
         actionBar.setIcon(R.mipmap.ic_launcher);
-        setTitle(TAG + " - not connected");
+        setTitle(getString(R.string.app_name) + " - not connected");
         setBluetoothState(BLUETOOTH_DISCONNECTED);
 
         // tabs
@@ -486,7 +502,7 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setTitle(TAG + " - connected to <" + bluetoothDeviceName + "@" + bluetoothDeviceAddress + ">");
+                        setTitle(getString(R.string.app_name) + " - connected to <" + bluetoothDeviceName + "@" + bluetoothDeviceAddress + ">");
                         setBluetoothState(BLUETOOTH_CONNECTED);
                     }
                 });
@@ -501,7 +517,7 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setTitle(TAG + " - disconnected");
+                        setTitle(getString(R.string.app_name) + " - disconnected");
                     }
                 });
             }
@@ -878,8 +894,7 @@ public class DashBoardActivity extends AppCompatActivity implements FieldListene
 //        }
 //
         else if (id == R.id.action_send_log) {
-//            mdhayatunnabi@yahoo.com
-            Logger.saveLogAndEmailFile(DashBoardActivity.this, "rashed.droid@gmail.com", new String[]{""});
+            Logger.saveLogAndEmailFile(DashBoardActivity.this, "mdhayatunnabi@yahoo.com", new String[]{"rashed.droid@gmail.com"});
         }
 
 

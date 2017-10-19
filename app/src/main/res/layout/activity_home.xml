@@ -121,6 +121,7 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:visibility="invisible"
                         android:id="@+id/item_profile"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"

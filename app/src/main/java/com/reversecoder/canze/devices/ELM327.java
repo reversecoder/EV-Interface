@@ -231,6 +231,7 @@ public class ELM327 extends Device {
             return deviceIsInitialized;
         }
 
+        //state of charge
         response = sendAndWaitForAnswer("03222002", 100); // // just one line
         Logger.d("Response<03222002>: " + response);
         sendResponseToUi("03222002", response);
@@ -240,6 +241,37 @@ public class ELM327 extends Device {
             e.printStackTrace();
         }
 
+        //speed
+        response = sendAndWaitForAnswer("03222003", 100); // // just one line
+        sendResponseToUi("03222003", response);
+        Logger.d("Response<Speed03>" + response);
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //Voltage after contactor
+        response = sendAndWaitForAnswer("03222004", 100); // // just one line
+        Logger.d("Response<03222004>: " + response);
+        sendResponseToUi("03222004", response);
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //12V Voltage
+        response = sendAndWaitForAnswer("03222005", 100); // // just one line
+        Logger.d("Response<03222005>: " + response);
+        sendResponseToUi("03222005", response);
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //odometer
         response = sendAndWaitForAnswer("03222006", 100); // // just one line
         Logger.d("Response<03222006>: " + response);
         sendResponseToUi("03222006", response);
@@ -249,27 +281,20 @@ public class ELM327 extends Device {
             e.printStackTrace();
         }
 
-//        response = sendAndWaitForAnswer("03222005", 100); // // just one line
-//        Logger.d("Response<VO05>: " + response);
-//        sendResponseToUi("03222005", response);
-//        try {
-//            Thread.sleep(300);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        response = sendAndWaitForAnswer("03222004", 100); // // just one line
-//        Logger.d("Response<VOtageaftercontactor04>: " + response);
-//        sendResponseToUi("03222004", response);
-//        try {
-//            Thread.sleep(300);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        //Sensors supply voltage 1
+        response = sendAndWaitForAnswer("03222021", 100); // // just one line
+        Logger.d("Response<03222021>: " + response);
+        sendResponseToUi("03222021", response);
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        response = sendAndWaitForAnswer("03222003", 100); // // just one line
-        sendResponseToUi("03222003", response);
-        Logger.d("Response<Speed03>" + response);
+        //Sensors supply voltage 2
+        response = sendAndWaitForAnswer("03222022", 100); // // just one line
+        Logger.d("Response<03222022>: " + response);
+        sendResponseToUi("03222022", response);
         try {
             Thread.sleep(300);
         } catch (InterruptedException e) {
